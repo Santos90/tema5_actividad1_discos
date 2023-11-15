@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tema5_actividad1_discos.POJO.Cancion
 import com.example.tema5_actividad1_discos.POJO.Disco
+import com.example.tema5_actividad1_discos.adapter.CancionListener
 import com.example.tema5_actividad1_discos.adapter.DiscoAdapter
 import com.example.tema5_actividad1_discos.adapter.DiscoListener
 import com.example.tema5_actividad1_discos.databinding.FragmentDiscoBinding
@@ -19,7 +21,8 @@ class DiscoFragment : Fragment(), DiscoListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var itemDecoration: DividerItemDecoration
 
-    private lateinit var discoListener: DiscoListener
+
+    private lateinit var listenerDisco: DiscoListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,9 +30,6 @@ class DiscoFragment : Fragment(), DiscoListener {
     ): View? {
 
         binding = FragmentDiscoBinding.inflate(inflater, container, false)
-
-
-
 
 
         discoAdapter = DiscoAdapter(Disco.DiscoDatos.DISCOS, this)
@@ -43,10 +43,13 @@ class DiscoFragment : Fragment(), DiscoListener {
 
         return binding.root
     }
+    fun setFragmentListener(listener: DiscoListener) {
+        this.listenerDisco = listener
 
+    }
 
-    override fun onClick(disco: Disco) {
-        TODO("Not yet implemented")
+    override fun seleccionarDisco(disco: Disco) {
+        listenerDisco.seleccionarDisco(disco)
     }
 
 

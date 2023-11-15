@@ -20,7 +20,7 @@ class CancionAdapter (private val lista: List<Cancion>, private val listener: Ca
         val binding = ItemBinding.bind(view) //Vinculamos la vista a nuestro adapter
 
         fun setListener(item :Cancion){
-            binding.root.setOnClickListener {listener.onClick(item)}
+            binding.root.setOnClickListener {listener.seleccionarCancion(item)}
         }
 
     }

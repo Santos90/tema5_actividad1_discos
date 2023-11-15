@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.tema5_actividad1_discos"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.tema5_actividad1_discos"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

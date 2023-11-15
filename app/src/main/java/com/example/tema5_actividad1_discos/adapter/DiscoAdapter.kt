@@ -20,7 +20,7 @@ class DiscoAdapter (private val lista: List<Disco>, private val listener: DiscoL
         val binding = ItemBinding.bind(view) //Vinculamos la vista a nuestro adapter
 
         fun setListener(item :Disco){
-            binding.root.setOnClickListener {listener.onClick(item)}
+            binding.root.setOnClickListener {listener.seleccionarDisco(item)}
         }
 
     }
@@ -35,7 +35,7 @@ class DiscoAdapter (private val lista: List<Disco>, private val listener: DiscoL
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) { //Asignamos el contenido a cada item del Layout Item.xml
-        val item = lista.get(position) as Disco
+        val item = lista.get(position)
 
         with(holder){
             setListener(item)

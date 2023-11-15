@@ -49,7 +49,7 @@ class CancionFragment : Fragment(), CancionListener {
         }
     }
 
-    override fun onClick(cancion: Cancion) {
+    override fun seleccionarCancion(cancion: Cancion) {
         TODO("Not yet implemented")
     }
 }
