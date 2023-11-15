@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+
+
+
+    android:layout_marginTop="16dp"
+    android:orientation="horizontal"
+
+    android:baselineAligned="false">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragDisco"
+            android:name="com.example.tema5_actividad1_discos.fragment.DiscoFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
+            tools:layout="@layout/fragment_disco" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragCancion"
+            android:name="com.example.tema5_actividad1_discos.fragment.CancionFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="40"
+            tools:layout="@layout/fragment_cancion" />
+
+
+
+</LinearLayout>
