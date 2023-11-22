@@ -35,7 +35,7 @@ class CancionAdapter (private val lista: List<Cancion>, private val listener: Ca
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) { //Asignamos el contenido a cada item del Layout Item.xml
-        val item = lista.get(position)
+        val item = lista[position]
 
         with(holder){
             setListener(item)

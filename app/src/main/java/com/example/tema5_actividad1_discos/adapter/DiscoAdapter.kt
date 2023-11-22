@@ -12,36 +12,43 @@ import com.example.tema5_actividad1_discos.POJO.Disco
 import com.example.tema5_actividad1_discos.R
 import com.example.tema5_actividad1_discos.databinding.ItemBinding
 
+// ... (imports y otras declaraciones)
 
-class DiscoAdapter (private val lista: List<Disco>, private val listener: DiscoListener):
-    RecyclerView.Adapter<DiscoAdapter.ViewHolder>(){
+class DiscoAdapter(private val lista: List<Disco>, private val listener: DiscoListener) :
+    RecyclerView.Adapter<DiscoAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view:View):RecyclerView.ViewHolder(view){
-        val binding = ItemBinding.bind(view) //Vinculamos la vista a nuestro adapter
+    private var selectedItem = RecyclerView.NO_POSITION
 
-        fun setListener(item :Disco){
-            binding.root.setOnClickListener {listener.seleccionarDisco(item)}
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val binding = ItemBinding.bind(view) // Vinculamos la vista a nuestro adapter
+
+        fun setListener(item: Disco) {
+            binding.root.setOnClickListener {
+                listener.seleccionarDisco(item)
+                setSelectedItem(adapterPosition)
+            }
+
+            // Configurar el estado seleccionado basado en la posición
+            binding.root.isSelected = adapterPosition == selectedItem
         }
-
     }
 
     private lateinit var context: Context
 
     // El layout manager invoca este método para renderizar cada elemento del RecyclerView
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder { //Inflar la vista item_tarea en el Recycler
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         val view = LayoutInflater.from(context).inflate(R.layout.item, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) { //Asignamos el contenido a cada item del Layout Item.xml
-        val item = lista.get(position)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = lista[position]
 
-        with(holder){
+        with(holder) {
             setListener(item)
             binding.lblTitulo.text = item.getNombre()
             binding.lblSubtitulo.text = item.getGrupo()
-
         }
 
         Glide.with(context)
@@ -49,12 +56,18 @@ class DiscoAdapter (private val lista: List<Disco>, private val listener: DiscoL
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .centerCrop()
             .into(holder.binding.imagen)
-
     }
 
     // Este método devolverá el tamaño de la lista
     override fun getItemCount(): Int = lista.size
 
+    // Método para actualizar el elemento seleccionado
+    private fun setSelectedItem(position: Int) {
+        val previousSelectedItem = selectedItem
+        selectedItem = position
 
-
+        // Notificar cambios solo en los elementos afectados
+        notifyItemChanged(previousSelectedItem)
+        notifyItemChanged(selectedItem)
+    }
 }

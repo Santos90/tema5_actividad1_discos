@@ -1,8 +1,8 @@
 package com.example.tema5_actividad1_discos.activity
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.example.tema5_actividad1_discos.POJO.Disco
 import com.example.tema5_actividad1_discos.R
 import com.example.tema5_actividad1_discos.adapter.DiscoListener
@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity(), DiscoListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var fragmentDisco : DiscoFragment
     private lateinit var fragmentCancion : CancionFragment
+    private var discoSeleccionado : Disco? = null
+
 
 
     private lateinit var discoListener: DiscoListener
@@ -23,32 +25,58 @@ class MainActivity : AppCompatActivity(), DiscoListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fragmentDisco = DiscoFragment()
 
+        fragmentDisco = DiscoFragment()
+        fragmentDisco.setFragmentListener(this)
 
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.contenedorFragments, fragmentDisco, DiscoFragment::class.java.name).commit()
+            .replace(binding.fragDisco.id, fragmentDisco, DiscoFragment::class.java.name)
+            .commit()
 
+        //fragmentDisco = supportFragmentManager.findFragmentById(binding.fragDisco!!.id) as DiscoFragment
+        if (discoSeleccionado == null) discoSeleccionado= Disco.DiscoDatos.DISCOS[0]
 
-        fragmentDisco.setFragmentListener(this)
+        seleccionarDisco(discoSeleccionado!!)
     }
 
     override fun seleccionarDisco(disco: Disco) {
         fragmentCancion = CancionFragment()
+        discoSeleccionado = disco
+        fragmentCancion.setDisco(disco)
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.contenedorFragments, fragmentCancion, CancionFragment::class.java.name)
-            .commit()
-        //fragmentCancion.setFragmentListener(this)
-        Log.i("Canciones", disco.getListaCanciones().toString() )
-        fragmentCancion.listarCanciones(disco.getListaCanciones())
+        var hayDetalle = supportFragmentManager.findFragmentById(R.id.fragCancion) != null
+                && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        if (hayDetalle) {//Si existe fragCancion, se muestra el contenido en la misma Activity
+
+            supportFragmentManager
+                .beginTransaction()
+                .replace(binding.fragCancion!!.id, fragmentCancion)
+                .commit()
+        } else {
+
+            supportFragmentManager
+                .beginTransaction()
+                .replace(binding.fragDisco.id, fragmentCancion)
+                .addToBackStack("Cancione")
+                .commit()
+        }
+    }
+
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
     }
 
 
